@@ -27,10 +27,10 @@ public class OrderService {
     private final WasherRepo washerRepo;
     private final ServiceRepo serviceRepo;
 
-    public ResponseEntity<?> save(OrderDto orderDto, int washCompanyId){
+    public ResponseEntity<?> save(OrderDto orderDto, int washCompanyId) {
         try {
             Optional<WashCompany> optionalWashCompany = washCompanyRepo.findById(washCompanyId);
-            if (optionalWashCompany.isPresent()){
+            if (optionalWashCompany.isPresent()) {
                 WashCompany washCompany = optionalWashCompany.get();
                 Order order = OrderMapper.toEntity(orderDto);
                 order.setWashCompany(washCompany);
@@ -38,19 +38,19 @@ public class OrderService {
                 serviceRepo.saveAll(order.getServices());
                 Order save = orderRepo.save(order);
                 return ResponseEntity.ok(new ResponseDto(200, "saved", save));
-            }else{
+            } else {
                 return ResponseEntity.ok(new ResponseDto(200, "wash company not found", null));
 
             }
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.ok(new ResponseDto(200, "something went wrong", null));
         }
     }
 
-    public ResponseEntity<?> getData(boolean isActive, Date from, Date to, int page, int companyId){
+    public ResponseEntity<?> getData(boolean isActive, Date from, Date to, int page, int companyId) {
         Pageable date = PageRequest.of(page - 1, 10, Sort.by("date"));
         return ResponseEntity.ok(new ResponseDto(200, "ok", orderRepo.findByIsActiveAndDateBetweenAndWashCompanyId(isActive, from, to, companyId, date)));
     }

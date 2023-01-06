@@ -14,7 +14,7 @@ public class EmailSenderService {
 
     private final JavaMailSender emailSender;
 
-    public ResponseEntity<?> sender(Message messages){
+    public ResponseEntity<?> sender(Message messages) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("elbeknurmatov01@gmail.com");
         message.setTo(messages.getToEmail());
