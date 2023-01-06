@@ -13,6 +13,6 @@ public class WasherDto {
     private String name;
     private String phoneNumber;
     private int stake;
-    private MultipartFile image;
-    private Boolean isActive;
+    private String image;
+    private Boolean isActive = true;
 }

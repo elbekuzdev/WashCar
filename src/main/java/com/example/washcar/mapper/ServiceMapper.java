@@ -8,15 +8,27 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ServiceMapper {
-    public static Service toEntity(ServiceDto serviceDto){
+    public static Service toEntity(ServiceDto serviceDto) {
         return new Service(serviceDto.getId(), serviceDto.getName(), serviceDto.getDuration(), serviceDto.getPrice());
     }
 
-    public static Set<Service> toEntity(Set<ServiceDto> washerDtos){
+    public static Set<Service> toEntity(Set<ServiceDto> washerDtos) {
         Set<Service> services = new HashSet<>();
-        for (ServiceDto serviceDto: washerDtos){
+        for (ServiceDto serviceDto : washerDtos) {
             services.add(toEntity(serviceDto));
         }
         return services;
+    }
+
+    public static ServiceDto toDto(Service service) {
+        return new ServiceDto(service.getId(), service.getName(), service.getDuration(), service.getPrice());
+    }
+
+    public static Set<ServiceDto> toDto(Set<Service> services) {
+        Set<ServiceDto> dtos = new HashSet<>();
+        for (Service service : services) {
+            dtos.add(toDto(service));
+        }
+        return dtos;
     }
 }

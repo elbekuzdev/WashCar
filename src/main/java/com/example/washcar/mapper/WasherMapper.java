@@ -21,4 +21,16 @@ public class WasherMapper {
         }
         return null;
     }
+
+    public static WasherDto toDto(Washer washer){
+        return new WasherDto(washer.getId(), washer.getName(), washer.getPhoneNumber(), washer.getStake(), null,washer.getIsActive());
+    }
+
+    public static Set<WasherDto> toDto(Set<Washer> washers){
+        Set<WasherDto> washerDtos = new HashSet<>();
+        for (Washer washer: washers){
+            washerDtos.add(toDto(washer));
+        }
+        return washerDtos;
+    }
 }

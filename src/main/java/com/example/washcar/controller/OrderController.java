@@ -35,4 +35,9 @@ public class OrderController {
         return orderService.getData(isActive, from, to, page, washCompanyId);
     }
 
+    @GetMapping("/order/{id}")
+    public ResponseEntity<?> get(@PathVariable int id){
+        return orderService.getById(id);
+    }
+
 }

@@ -52,6 +52,16 @@ public class OrderService {
 
     public ResponseEntity<?> getData(boolean isActive, Date from, Date to, int page, int companyId) {
         Pageable date = PageRequest.of(page - 1, 10, Sort.by("date"));
-        return ResponseEntity.ok(new ResponseDto(200, "ok", orderRepo.findByIsActiveAndDateBetweenAndWashCompanyId(isActive, from, to, companyId, date)));
+        return ResponseEntity.ok(new ResponseDto(200, "ok", OrderMapper.toDto(orderRepo.findByIsActiveAndDateBetweenAndWashCompanyId(isActive, from, to, companyId, date))));
+    }
+
+    public ResponseEntity<?> getById(int id){
+        Optional<Order> optionalOrder = orderRepo.findById(id);
+        if (optionalOrder.isPresent()){
+            Order order = optionalOrder.get();
+            return ResponseEntity.ok(new ResponseDto(200, "ok", OrderMapper.toDto(order)));
+        }else{
+            return ResponseEntity.ok(new ResponseDto(203, "order not found", null));
+        }
     }
 }
