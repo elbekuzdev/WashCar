@@ -4,12 +4,14 @@ import com.example.washcar.dto.ServiceDto;
 import com.example.washcar.dto.WasherDto;
 import com.example.washcar.entity.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ServiceMapper {
     public static Service toEntity(ServiceDto serviceDto) {
-        return new Service(serviceDto.getId(), serviceDto.getName(), serviceDto.getDuration(), serviceDto.getPrice());
+        return new Service(serviceDto.getId(), serviceDto.getName(), serviceDto.getDuration(), serviceDto.getPrice(), null);
     }
 
     public static Set<Service> toEntity(Set<ServiceDto> washerDtos) {
@@ -29,6 +31,13 @@ public class ServiceMapper {
         for (Service service : services) {
             dtos.add(toDto(service));
         }
+        return dtos;
+    }
+
+    public static List<ServiceDto> toDto(List<Service> services){
+        List<ServiceDto> dtos = new ArrayList<>(services.size());
+        for (Service service: services)
+            dtos.add(toDto(service));
         return dtos;
     }
 }
