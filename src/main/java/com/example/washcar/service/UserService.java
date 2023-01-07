@@ -7,17 +7,17 @@ import com.example.washcar.mapper.UserMapper;
 import com.example.washcar.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
 
@@ -56,4 +56,26 @@ public class UserService {
         }
     }
 
+    public ResponseEntity<?> changePassword(String login, String oldPassword, String newPassword) {
+        Optional<Users> optionalUsers = userRepo.findByLogin(login);
+        if (optionalUsers.isPresent()) {
+            Users users = optionalUsers.get();
+            if (passwordEncoder.matches(oldPassword, users.getPassword())) {
+                users.setPassword(passwordEncoder.encode(newPassword));
+                userRepo.save(users);
+                return ResponseEntity.ok(new ResponseDto(403, "password is successfully changed", null));
+            } else {
+                return ResponseEntity.ok(new ResponseDto(403, "old password is incorrect", null));
+            }
+        } else {
+            return ResponseEntity.ok(new ResponseDto(403, "user not found", null));
+        }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<Users> optionalUsers = userRepo.findByLogin(username);
+        if (optionalUsers.isPresent()) return optionalUsers.get();
+        else throw new UsernameNotFoundException("user not found");
+    }
 }
