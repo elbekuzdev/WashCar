@@ -2,13 +2,14 @@ package com.example.washcar.mapper;
 
 import com.example.washcar.dto.WasherDto;
 import com.example.washcar.entity.Washer;
+import org.hibernate.loader.custom.NonUniqueDiscoveredSqlAliasException;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class WasherMapper {
     public static Washer toEntity(WasherDto washerDto){
-        return new Washer(washerDto.getId(), washerDto.getName(), washerDto.getPhoneNumber(), washerDto.getStake(), null, washerDto.getIsActive());
+        return new Washer(washerDto.getId(), washerDto.getName(), washerDto.getPhoneNumber(), washerDto.getStake(), null, washerDto.getIsActive(), null);
     }
 
     public static Set<Washer> toEntity(Set<WasherDto> washerDtos){
@@ -23,7 +24,7 @@ public class WasherMapper {
     }
 
     public static WasherDto toDto(Washer washer){
-        return new WasherDto(washer.getId(), washer.getName(), washer.getPhoneNumber(), washer.getStake(), null,washer.getIsActive());
+        return new WasherDto(washer.getId(), washer.getName(), washer.getPhoneNumber(), washer.getStake(),washer.getIsActive());
     }
 
     public static Set<WasherDto> toDto(Set<Washer> washers){

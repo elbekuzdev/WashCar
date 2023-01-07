@@ -15,9 +15,12 @@ public class Washer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    @Column(unique = true)
     private String phoneNumber;
     private int stake;
     @OneToOne
     private Photo image;
     private Boolean isActive;
+    @ManyToOne
+    private WashCompany washCompany;
 }
