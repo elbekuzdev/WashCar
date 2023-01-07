@@ -55,13 +55,61 @@ public class OrderService {
         return ResponseEntity.ok(new ResponseDto(200, "ok", OrderMapper.toDto(orderRepo.findByIsActiveAndDateBetweenAndWashCompanyId(isActive, from, to, companyId, date))));
     }
 
-    public ResponseEntity<?> getById(int id){
+    public ResponseEntity<?> getById(int id) {
         Optional<Order> optionalOrder = orderRepo.findById(id);
-        if (optionalOrder.isPresent()){
+        if (optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
             return ResponseEntity.ok(new ResponseDto(200, "ok", OrderMapper.toDto(order)));
-        }else{
+        } else {
             return ResponseEntity.ok(new ResponseDto(203, "order not found", null));
+        }
+    }
+
+    public ResponseEntity<?> update(OrderDto orderDto) {
+        Order order = OrderMapper.toEntity(orderDto);
+        Optional<Order> optionalOrder = orderRepo.findById(order.getId());
+        if (optionalOrder.isPresent()) {
+            Order order1 = optionalOrder.get();
+            concat(order, order1);
+            serviceRepo.saveAll(order.getServices());
+            washerRepo.saveAll(order.getWashers());
+            Order save = orderRepo.save(order);
+            return ResponseEntity.ok(new ResponseDto(200, "updated", save));
+        } else {
+            return ResponseEntity.ok(new ResponseDto(206, "order not found", null));
+        }
+    }
+
+    private void concat(Order order, Order order1) {
+        if (order.getCarModel() == null) {
+            order.setCarModel(order1.getCarModel());
+        }
+        if (order.getServices() == null) {
+            order.setServices(order1.getServices());
+        }
+        if (order.getWashers() == null) {
+            order.setWashers(order1.getWashers());
+        }
+        if (order.getPrice() == null) {
+            order.setPrice(order1.getPrice());
+        }
+        if (order.getCarNumber() == null) {
+            order.setCarNumber(order1.getCarNumber());
+        }
+        if (order.getClientName() == null) {
+            order.setClientName(order1.getClientName());
+        }
+        if (order.getClientNumber() == null) {
+            order.setClientNumber(order1.getClientNumber());
+        }
+        if (order.getIsActive() == null) {
+            order.setIsActive(order1.getIsActive());
+        }
+        if (order.getIsCancelled() == null) {
+            order.setIsCancelled(order1.getIsCancelled());
+        }
+        if (order.getDate() == null) {
+            order.setDate(order1.getDate());
         }
     }
 }
