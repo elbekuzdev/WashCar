@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -23,4 +24,17 @@ public class Washer {
     private Boolean isActive;
     @ManyToOne
     private WashCompany washCompany;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Washer washer = (Washer) o;
+        return Objects.equals(name, washer.name) && Objects.equals(phoneNumber, washer.phoneNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, phoneNumber);
+    }
 }

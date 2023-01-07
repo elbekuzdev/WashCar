@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface OrderRepo extends JpaRepository<Order, Integer> {
     List<Order> findByIsActiveAndDateBetweenAndWashCompanyId(boolean isActive, Date from, Date to, int companyId, Pageable pageable);
+    List<Order> findByIsActiveAndDateBetweenAndWashCompanyId(boolean isActive, Date from, Date to, int companyId);
 }

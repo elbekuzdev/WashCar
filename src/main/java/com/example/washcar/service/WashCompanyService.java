@@ -2,11 +2,15 @@ package com.example.washcar.service;
 
 import com.example.washcar.dto.ResponseDto;
 import com.example.washcar.dto.WashCompanyDto;
+import com.example.washcar.entity.Order;
 import com.example.washcar.entity.Photo;
 import com.example.washcar.entity.WashCompany;
+import com.example.washcar.entity.Washer;
 import com.example.washcar.mapper.WashCompanyMapper;
+import com.example.washcar.repo.OrderRepo;
 import com.example.washcar.repo.PhotoRepo;
 import com.example.washcar.repo.WashCompanyRepo;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
@@ -21,14 +25,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class WashCompanyService {
     private final WashCompanyRepo washCompanyRepo;
     private final PhotoRepo photoRepo;
+    private final OrderRepo orderRepo;
 
 
     public ResponseEntity<?> save(WashCompanyDto companyDto) {
@@ -93,5 +97,27 @@ public class WashCompanyService {
         } else {
             return ResponseEntity.ok(new ResponseDto(209, "company not found", null));
         }
+    }
+
+    public ResponseEntity<?> analytics(int washCompanyId, Date dateFrom, Date dateTo){
+        HashMap<String, Object> data = new HashMap<>();
+        System.out.println(dateFrom);
+        System.out.println(dateTo);
+        List<Order> orders = orderRepo.findByIsActiveAndDateBetweenAndWashCompanyId(true, dateFrom, dateTo, washCompanyId);
+        System.out.println(orders);
+        data.put("totalOrders", orders.size());
+        HashSet<Washer> washers = new HashSet<>();
+        double ordersSum = 0;
+        double washersSum = 0;
+        for (Order order: orders){
+            ordersSum += order.getPrice();
+            washersSum += order.getPrice() * 0.01;
+            washers.addAll(order.getWashers());
+        }
+        data.put("totalWashers", washers.size());
+        data.put("ordersSum", ordersSum);
+        data.put("washersSum", washersSum);
+        return ResponseEntity.ok(new ResponseDto(200, "ok", data));
+
     }
 }
