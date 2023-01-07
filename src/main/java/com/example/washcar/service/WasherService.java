@@ -53,7 +53,8 @@ public class WasherService {
 
     public ResponseEntity<?> getByName(int washCompanyId, String name, int page) {
         Pageable of = PageRequest.of(page - 1, 10);
-        return ResponseEntity.ok(new ResponseDto(200, "ok", washerRepo.findByWashCompanyIdAndNameContaining(washCompanyId, name, of)));
+
+        return ResponseEntity.ok(new ResponseDto(200, "ok", WasherMapper.toDto(washerRepo.findByWashCompanyIdAndNameContaining(washCompanyId, name, of))));
     }
 
     public ResponseEntity<?> savePhoto(int washerId, MultipartFile file) {
@@ -105,21 +106,21 @@ public class WasherService {
         }
     }
 
-    public ResponseEntity<?> getById(int washerId){
+    public ResponseEntity<?> getById(int washerId) {
         Optional<Washer> optionalWasher = washerRepo.findById(washerId);
-        if (optionalWasher.isPresent()){
+        if (optionalWasher.isPresent()) {
             Washer washer = optionalWasher.get();
-            if (washer.getImage() != null){
+            if (washer.getImage() != null) {
                 WasherDto washerDto = WasherMapper.toDto(washer);
                 washerDto.setImage(String.format("http://localhost:8080/%d/getPhoto", washer.getId()));
                 return ResponseEntity.ok(new ResponseDto(200, "ok", washerDto));
-            }else{
+            } else {
                 WasherDto washerDto = WasherMapper.toDto(washer);
                 washerDto.setImage("picture not found");
                 return ResponseEntity.ok(new ResponseDto(200, "ok", washerDto));
             }
 
-        }else{
+        } else {
             return ResponseEntity.ok(new ResponseDto(204, "washer not found", null));
         }
     }
