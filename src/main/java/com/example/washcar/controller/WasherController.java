@@ -15,22 +15,27 @@ public class WasherController {
 
 
     @PostMapping("/{washCompanyId}/insertWasher")
-    public ResponseEntity<?> save(@PathVariable int washCompanyId, @RequestBody WasherDto washerDto){
+    public ResponseEntity<?> save(@PathVariable int washCompanyId, @RequestBody WasherDto washerDto) {
         return washerService.save(washerDto, washCompanyId);
     }
 
     @GetMapping("/{washCompanyId}/washers")
-    public ResponseEntity<?> getByName(@RequestParam String searchName, @RequestParam int page, @PathVariable int washCompanyId){
+    public ResponseEntity<?> getByName(@RequestParam String searchName, @RequestParam int page, @PathVariable int washCompanyId) {
         return washerService.getByName(washCompanyId, searchName, page);
     }
 
     @PutMapping("/{washerId}/addPhoto")
-    public ResponseEntity<?> savePhoto(@RequestParam MultipartFile photo, @PathVariable int washerId){
+    public ResponseEntity<?> savePhoto(@RequestParam MultipartFile photo, @PathVariable int washerId) {
         return washerService.savePhoto(washerId, photo);
     }
 
     @GetMapping("/{washerId}/getPhoto")
-    public ResponseEntity<?> getPhoto(@PathVariable int washerId){
+    public ResponseEntity<?> getPhoto(@PathVariable int washerId) {
         return washerService.getPhoto(washerId);
+    }
+
+    @GetMapping("/washer")
+    public ResponseEntity<?> getById(@RequestParam int id) {
+        return washerService.getById(id);
     }
 }

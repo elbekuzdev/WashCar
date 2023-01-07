@@ -13,5 +13,6 @@ public class WasherDto {
     private String name;
     private String phoneNumber;
     private int stake;
+    private String image;
     private Boolean isActive = true;
 }

@@ -90,7 +90,6 @@ public class WasherService {
                 Photo image = washer.getImage();
                 String path = "\\src\\main\\resources\\static\\images\\washer\\washerImage" + washerId + "." + image.getContentType().split("/")[1];
                 String currentDir = System.getProperty("user.dir") + path;
-                
                 try {
                     ByteArrayResource inputStream = new ByteArrayResource(Files.readAllBytes(Paths.get(currentDir)));
                     return ResponseEntity.ok().contentType(MediaType.valueOf(image.getContentType().toUpperCase())).body(inputStream);
@@ -103,6 +102,25 @@ public class WasherService {
             }
         } else {
             return ResponseEntity.ok(new ResponseDto(207, "washer not found", null));
+        }
+    }
+
+    public ResponseEntity<?> getById(int washerId){
+        Optional<Washer> optionalWasher = washerRepo.findById(washerId);
+        if (optionalWasher.isPresent()){
+            Washer washer = optionalWasher.get();
+            if (washer.getImage() != null){
+                WasherDto washerDto = WasherMapper.toDto(washer);
+                washerDto.setImage(String.format("http://localhost:8080/%d/getPhoto", washer.getId()));
+                return ResponseEntity.ok(new ResponseDto(200, "ok", washerDto));
+            }else{
+                WasherDto washerDto = WasherMapper.toDto(washer);
+                washerDto.setImage("picture not found");
+                return ResponseEntity.ok(new ResponseDto(200, "ok", washerDto));
+            }
+
+        }else{
+            return ResponseEntity.ok(new ResponseDto(204, "washer not found", null));
         }
     }
 

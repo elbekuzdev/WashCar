@@ -24,7 +24,7 @@ public class WasherMapper {
     }
 
     public static WasherDto toDto(Washer washer){
-        return new WasherDto(washer.getId(), washer.getName(), washer.getPhoneNumber(), washer.getStake(),washer.getIsActive());
+        return new WasherDto(washer.getId(), washer.getName(), washer.getPhoneNumber(), washer.getStake(),null, washer.getIsActive());
     }
 
     public static Set<WasherDto> toDto(Set<Washer> washers){
