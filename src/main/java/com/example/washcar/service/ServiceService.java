@@ -48,6 +48,34 @@ public class ServiceService {
         }
     }
 
+    public ResponseEntity<?> update(int washCompanyId, ServiceDto serviceDto){
+        Optional<WashCompany> optionalWashCompany = washCompanyRepo.findById(washCompanyId);
+        if (optionalWashCompany.isPresent()){
+            WashCompany washCompany = optionalWashCompany.get();
+            Optional<com.example.washcar.entity.Service> optionalService = serviceRepo.findById(serviceDto.getId());
+            if (optionalService.isPresent()){
+                com.example.washcar.entity.Service service1 = optionalService.get();
+                com.example.washcar.entity.Service service = ServiceMapper.toEntity(serviceDto);
+                service.setWashCompany(washCompany);
+                if (service.getDuration() == 0){
+                    service.setDuration(service1.getDuration());
+                }
+                if (service.getName() == null){
+                    service.setName(service1.getName());
+                }
+                if (service.getPrice() == 0){
+                    service.setPrice(service1.getPrice());
+                }
+                return ResponseEntity.ok(new ResponseDto(200, "saved", ServiceMapper.toDto(serviceRepo.save(service))));
+            }else{
+                return ResponseEntity.ok(new ResponseDto(203, "service not found", null));
+            }
+
+        }else{
+            return ResponseEntity.ok(new ResponseDto(203, "washCompany not found", null));
+        }
+    }
+
 
 }
 

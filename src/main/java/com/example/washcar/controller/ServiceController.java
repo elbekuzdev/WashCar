@@ -26,4 +26,8 @@ public class ServiceController {
     public ResponseEntity<?> getById(@RequestParam int id){
         return service.getById(id);
     }
+    @PatchMapping("/{washCompanyId}/updateService")
+    public ResponseEntity<?> update(@RequestBody ServiceDto serviceDto, @PathVariable int washCompanyId){
+        return service.update(washCompanyId, serviceDto);
+    }
 }
