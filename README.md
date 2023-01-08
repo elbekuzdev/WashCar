@@ -4,7 +4,7 @@
 
 Avtomobil yuvish shahobchalarini raqamlashtirish maqsadida yasalgan dastur
 
-Api lardan foydalanish uchun [json link](https://api.postman.com/collections/22851712-c9832f12-4380-4bb3-9b84-c1cfe77e023f?access_key=PMAT-01GP6F4M8GP5RY2QD5PYTEKZ8Y)
+Api lardan foydalanish uchun [json link](https://api.postman.com/collections/22851712-c9832f12-4380-4bb3-9b84-c1cfe77e023f?access_key=PMAT-01GP6F4M8GP5RY2QD5PYTEKZ8Y) ga postman kiring
 
 Projectni [aws](https://aws.amazon.com/) serverga ham yuklab qo'ydim, serverdagini backend ni ishlatib ko'rish uchun 
 
