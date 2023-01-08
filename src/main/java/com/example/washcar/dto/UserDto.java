@@ -12,5 +12,5 @@ public class UserDto {
     private String name;
     private String login;
     private String password;
-    private RoleDto roleDto = RoleDto.OWNER;
+    private RoleDto roleDto = RoleDto.ADMIN;
 }
